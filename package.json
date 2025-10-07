@@ -1,9 +1,9 @@
 {
-  "name": "soraaccess",
-  "description": "A Mesh starter template for NextJS",
-  "author": "MeshJS",
+  "name": "ada2Sora",
+  "description": "Generate videos with Sora-2 with ADA",
+  "author": "Macroman",
   "license": "Apache-2.0",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,20 +11,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@blockfrost/blockfrost-js": "^5.4.0",
     "@meshsdk/core": "^1.9.0-beta.0",
     "@meshsdk/react": "^1.9.0-beta.0",
+    "formidable": "^3.5.1",
+    "next": "15.0.3",
+    "openai": "^6.2.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "next": "15.0.3"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/formidable": "^3.4.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.3"
+    "typescript": "^5"
   }
 }

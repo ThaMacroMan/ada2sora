@@ -6,7 +6,7 @@ import { MeshProvider } from "@meshsdk/react";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <MeshProvider>
-      <Component {...pageProps} />
+      <Component {...pageProps} /> 
     </MeshProvider>
   );
 }

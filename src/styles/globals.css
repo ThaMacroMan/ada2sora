@@ -1,3 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black min-h-screen;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-zinc-900 border border-zinc-800 shadow-sm;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-medium;
+    @apply bg-white text-black;
+    @apply hover:bg-gray-100;
+    @apply transition-all duration-200;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply active:scale-95;
+    @apply min-h-[48px];
+  }
+
+  .btn-secondary {
+    @apply px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl font-medium;
+    @apply bg-zinc-900 border border-zinc-700 text-white;
+    @apply hover:bg-zinc-800;
+    @apply transition-all duration-200;
+    @apply active:scale-95;
+    @apply min-h-[48px];
+  }
+
+  .input-field {
+    @apply bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 sm:px-6 sm:py-4 w-full;
+    @apply text-white placeholder-gray-500;
+    @apply focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-transparent;
+    @apply transition-all duration-200;
+    @apply text-base;
+  }
+
+  /* Custom select dropdown styling */
+  select.input-field {
+    @apply pr-12 cursor-pointer appearance-none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+  }
+}
