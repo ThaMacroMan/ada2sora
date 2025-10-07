@@ -346,7 +346,15 @@ function HomePage() {
               Sora-2 Video Generator
             </h1>
             <p className="text-gray-400 text-sm sm:text-base md:text-lg">
-              Turn ADA to AI videos with Sora-2
+              Turn ADA to AI videos with Sora-2 • Made By{" "}
+              <a
+                href="https://x.com/ThaMacroMan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                MacroMan
+              </a>
             </p>
           </div>
 
