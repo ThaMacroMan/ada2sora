@@ -114,7 +114,7 @@ export default async function handler(
     const generateParams = {
       model: "sora-2" as const,
       prompt: prompt.trim(),
-      seconds: (parseInt(seconds || "4") as 4 | 8 | 12 | 16 | 20) || 4,
+      seconds: (seconds || "4") as "4" | "8" | "12",
       size: size || "1280x720", // Default to 720p landscape if not specified
     };
 
