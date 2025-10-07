@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import OpenAI from "openai";
-import formidable, { File } from "formidable";
+import formidable from "formidable";
 import { getPaymentStatus } from "./process-payment";
 import { verifyPayment } from "@/lib/blockfrost";
 
@@ -32,7 +32,7 @@ const parseForm = (
     });
     form.parse(
       req,
-      (err: any, fields: formidable.Fields, files: formidable.Files) => {
+      (err: unknown, fields: formidable.Fields, files: formidable.Files) => {
         if (err) reject(err);
         else resolve({ fields, files });
       }
@@ -54,7 +54,7 @@ export default async function handler(
     }
 
     // Parse form data
-    const { fields, files } = await parseForm(req);
+    const { fields } = await parseForm(req);
 
     const prompt = Array.isArray(fields.prompt)
       ? fields.prompt[0]
@@ -111,10 +111,10 @@ export default async function handler(
     }
 
     // Prepare request parameters
-    const generateParams: any = {
-      model: "sora-2",
+    const generateParams = {
+      model: "sora-2" as const,
       prompt: prompt.trim(),
-      seconds: seconds || "4", // Default to 4 seconds if not specified
+      seconds: (parseInt(seconds || "4") as 4 | 8 | 12 | 16 | 20) || 4,
       size: size || "1280x720", // Default to 720p landscape if not specified
     };
 
@@ -122,17 +122,20 @@ export default async function handler(
 
     // Generate video with Sora
     console.log("📹 Calling openai.videos.create...");
-    const video = await openai.videos.create(generateParams);
+    const video = await openai.videos.create(
+      generateParams as unknown as Parameters<typeof openai.videos.create>[0]
+    );
     console.log("✅ Video job created:", JSON.stringify(video, null, 2));
 
     // Return the video ID for frontend to handle
     console.log("✨ Returning video ID");
     return res.status(200).json({ videoId: video.id });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error generating video:", error);
 
     return res.status(500).json({
-      error: error?.message || "Failed to generate video",
+      error:
+        error instanceof Error ? error.message : "Failed to generate video",
     });
   }
 }

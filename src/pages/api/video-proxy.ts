@@ -49,10 +49,13 @@ export default async function handler(
     }
 
     res.end();
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error proxying video:", error);
     return res.status(500).json({
-      error: error?.message || "Failed to proxy video content",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to proxy video content",
     });
   }
 }

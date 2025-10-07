@@ -41,7 +41,9 @@ export default async function handler(
     console.log(`📊 Checking status for video: ${videoId}`);
     const video = await openai.videos.retrieve(videoId);
     console.log(
-      `✅ Status: ${video.status}, Progress: ${(video as any).progress || 0}`
+      `✅ Status: ${video.status}, Progress: ${
+        (video as { progress?: number }).progress || 0
+      }`
     );
 
     // Log full video object for debugging
@@ -60,7 +62,7 @@ export default async function handler(
     if (video.status === "completed") {
       try {
         // The video object should have a url property when completed
-        videoUrl = (video as any).url;
+        videoUrl = (video as { url?: string }).url;
         if (videoUrl) {
           console.log(`🔗 Video URL: ${videoUrl}`);
         } else {
@@ -73,15 +75,17 @@ export default async function handler(
 
     return res.status(200).json({
       status: video.status,
-      progress: (video as any).progress || 0,
-      errorMessage: (video as any).error?.message || null,
+      progress: (video as { progress?: number }).progress || 0,
+      errorMessage:
+        (video as { error?: { message?: string } }).error?.message || null,
       videoUrl: videoUrl,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error checking video status:", error);
     return res.status(500).json({
       status: "error",
-      error: error?.message || "Failed to check video status",
+      error:
+        error instanceof Error ? error.message : "Failed to check video status",
     });
   }
 }

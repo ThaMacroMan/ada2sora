@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useWallet } from "@meshsdk/react";
 import { Transaction } from "@meshsdk/core";
 
@@ -36,16 +36,9 @@ export default function PaymentModal({
   const [isLoading, setIsLoading] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [txHash, setTxHash] = useState<string | null>(null);
+  const [, setTxHash] = useState<string | null>(null);
 
-  // Fetch price data when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      fetchPriceData();
-    }
-  }, [isOpen, duration]);
-
-  const fetchPriceData = async () => {
+  const fetchPriceData = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await fetch(`/api/calculate-price?duration=${duration}`);
@@ -56,12 +49,21 @@ export default function PaymentModal({
       }
 
       setPriceData(data);
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch price data");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch price data"
+      );
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [duration]);
+
+  // Fetch price data when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchPriceData();
+    }
+  }, [isOpen, duration, fetchPriceData]);
 
   const handlePayment = async () => {
     if (!wallet || !connected || !priceData) return;
@@ -109,8 +111,8 @@ export default function PaymentModal({
 
       // Wait for payment confirmation
       await waitForPaymentConfirmation(txHash);
-    } catch (err: any) {
-      setError(err.message || "Payment failed");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Payment failed");
       console.error("Payment error:", err);
     } finally {
       setIsProcessing(false);

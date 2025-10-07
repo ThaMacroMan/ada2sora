@@ -60,7 +60,7 @@ export default async function handler(
       baseCostADA: BASE_COST_ADA,
       perSecondCostUSD: PER_SECOND_COST_USD,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error calculating price:", error);
     return res.status(500).json({
       adaPrice: 0,
@@ -69,7 +69,8 @@ export default async function handler(
       duration: 0,
       baseCostADA: 0,
       perSecondCostUSD: 0,
-      error: error?.message || "Failed to calculate price",
+      error:
+        error instanceof Error ? error.message : "Failed to calculate price",
     });
   }
 }

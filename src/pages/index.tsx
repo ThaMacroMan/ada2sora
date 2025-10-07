@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import { MeshProvider } from "@meshsdk/react";
 import WalletConnection from "@/components/WalletConnection";
@@ -16,7 +16,7 @@ function HomePage() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentTxHash, setPaymentTxHash] = useState<string | null>(null);
 
-  const handleWalletConnect = (address: string) => {
+  const handleWalletConnect = () => {
     setWalletConnected(true);
   };
 
@@ -134,11 +134,14 @@ function HomePage() {
 
       // If we get here, we've exceeded max attempts
       throw new Error("Video generation timed out. Please try again.");
-    } catch (err: any) {
-      const errorMessage = err.message || "Failed to generate video";
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to generate video";
       setError(errorMessage);
       console.error("Error generating video:", err);
-      console.error("Error stack:", err.stack);
+      if (err instanceof Error) {
+        console.error("Error stack:", err.stack);
+      }
     } finally {
       setIsGenerating(false);
       setGenerationStatus("");
@@ -256,11 +259,14 @@ function HomePage() {
 
       // If we get here, we've exceeded max attempts
       throw new Error("Video generation timed out. Please try again.");
-    } catch (err: any) {
-      const errorMessage = err.message || "Failed to generate video";
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to generate video";
       setError(errorMessage);
       console.error("Error generating video:", err);
-      console.error("Error stack:", err.stack);
+      if (err instanceof Error) {
+        console.error("Error stack:", err.stack);
+      }
     } finally {
       setIsGenerating(false);
       setGenerationStatus("");
@@ -352,7 +358,6 @@ function HomePage() {
                 <WalletConnection
                   onConnect={handleWalletConnect}
                   onDisconnect={handleWalletDisconnect}
-                  connected={walletConnected}
                 />
 
                 {/* Prompt Input */}
